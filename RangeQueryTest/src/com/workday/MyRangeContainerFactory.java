@@ -8,5 +8,6 @@ public class MyRangeContainerFactory implements RangeContainerFactory {
     for (long input : data) {
 
     }
+    return null;
   }
 }

@@ -4,10 +4,13 @@ public class MyRangeContainerFactory implements RangeContainerFactory {
 
   @Override
   public RangeContainer createContainer(long[] data) {
-    int i = 0;
-    for (long input : data) {
+    MyRangeContainer myRangeContainer = new MyRangeContainer();
+    try {
+      myRangeContainer.initTreeMap(data);
+    } catch (Exception e) {
 
+      e.printStackTrace();
     }
-    return null;
+    return myRangeContainer;
   }
 }

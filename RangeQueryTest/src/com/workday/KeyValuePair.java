@@ -1,23 +1,27 @@
 package com.workday;
 
-public class KeyValuePair {
-  private long key;
-  private long value;
+/**
+ * Class to store id and value. It should have better memory usage than HashMap.
+ * 
+ * @author rantao
+ *
+ */
+final public class KeyValuePair implements Comparable<KeyValuePair> {
+  short id;
+  long value;
 
-  private long getKey() {
-    return key;
-  }
-
-  private void setKey(long key) {
-    this.key = key;
-  }
-
-  private long getValue() {
-    return value;
-  }
-
-  private void setValue(long value) {
+  public KeyValuePair(short id, long value) {
+    this.id = id;
     this.value = value;
   }
 
+  @Override
+  public int compareTo(KeyValuePair kvp) {
+    if (this.value > kvp.value)
+      return 1;
+    else if (this.value == kvp.value)
+      return 0;
+    else
+      return -1;
+  }
 }

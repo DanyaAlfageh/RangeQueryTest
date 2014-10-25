@@ -1,14 +1,14 @@
 package com.workday;
 
-import java.util.Collections;
-import java.util.Map;
 import java.util.NavigableMap;
-import java.util.TreeMap;
 
-public class MyRangeContainer implements RangeContainer {
+final public class TreeMapRangeContainer implements RangeContainer {
 
-  final private NavigableMap<Long, Short> treeMap = Collections
-      .synchronizedNavigableMap(new TreeMap<Long, Short>());;
+  final private NavigableMap<Long, Short> treeMap;
+
+  public TreeMapRangeContainer(NavigableMap<Long, Short> treeMap) {
+    this.treeMap = treeMap;
+  }
 
   public void initTreeMap(long[] data) throws Exception {
 
@@ -24,21 +24,17 @@ public class MyRangeContainer implements RangeContainer {
   @Override
   public Ids findIdsInRange(long fromValue, long toValue, boolean fromInclusive, boolean toInclusive) {
 
-    MyIds ids = null;
+    IdsFromTreeMap ids = null;
     NavigableMap<Long, Short> subMap =
         this.treeMap.subMap(fromValue, fromInclusive, toValue, toInclusive);
 
     synchronized (this.treeMap) {
       Object[] objArr = subMap.values().toArray(new Short[subMap.size()]);
       if (objArr instanceof Short[]) {
-        ids = new MyIds((Short[]) objArr);
+        ids = new IdsFromTreeMap((Short[]) objArr);
       }
     }
 
     return ids;
-  }
-
-  public Map<Long, Short> getTreeMap() {
-    return treeMap;
   }
 }

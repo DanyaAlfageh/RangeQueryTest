@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class IdsFromTreeMap implements Ids {
+public class IdsFromTreeMapImpl implements Ids {
 
   final List<Short> idList;
 
@@ -14,7 +14,7 @@ public class IdsFromTreeMap implements Ids {
   /**
    * dummy constructor
    */
-  public IdsFromTreeMap() {
+  public IdsFromTreeMapImpl() {
     idList = new ArrayList<Short>();
   }
 
@@ -23,7 +23,7 @@ public class IdsFromTreeMap implements Ids {
    * 
    * @param objArr
    */
-  public IdsFromTreeMap(List<Short> obj) {
+  public IdsFromTreeMapImpl(List<Short> obj) {
 
     idList = new ArrayList<Short>();
     idList.addAll(obj);

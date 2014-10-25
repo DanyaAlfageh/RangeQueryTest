@@ -10,7 +10,7 @@ import java.util.List;
  * @author rantao
  *
  */
-final public class BalancedBSTRangeContainer implements RangeContainer {
+final public class BalancedBSTRangeContainerImpl implements RangeContainer {
 
   final private BalancedBST bst;
 
@@ -19,7 +19,7 @@ final public class BalancedBSTRangeContainer implements RangeContainer {
    * 
    * @param data
    */
-  public BalancedBSTRangeContainer(long[] data) {
+  public BalancedBSTRangeContainerImpl(long[] data) {
     bst = new BalancedBST(data);
   }
 
@@ -28,11 +28,11 @@ final public class BalancedBSTRangeContainer implements RangeContainer {
     // validate input condition
     if (fromValue > toValue || (fromValue == toValue && fromInclusive != toInclusive)
         || (fromValue == toValue && fromInclusive == false && toInclusive == false)) {
-      return new IdsFromBST(new ArrayList<Short>());
+      return new IdsFromBBSTImpl(new ArrayList<Short>());
     }
 
     List<Short> idList = bst.searchIdsInRange(fromValue, toValue, fromInclusive, toInclusive);
     Collections.sort(idList);
-    return new IdsFromBST(idList);
+    return new IdsFromBBSTImpl(idList);
   }
 }

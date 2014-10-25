@@ -2,12 +2,12 @@ package com.workday;
 
 import java.util.List;
 
-public class IdsFromBST implements Ids {
+public class IdsFromBBSTImpl implements Ids {
 
   private List<Short> idList;
   private short i = 0;
 
-  public IdsFromBST(List<Short> idList) {
+  public IdsFromBBSTImpl(List<Short> idList) {
     this.idList = idList;
   }
 

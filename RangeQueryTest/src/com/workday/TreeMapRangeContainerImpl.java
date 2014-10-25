@@ -13,7 +13,7 @@ import java.util.TreeMap;
  * @author rantao
  *
  */
-final public class TreeMapRangeContainer implements RangeContainer {
+final public class TreeMapRangeContainerImpl implements RangeContainer {
 
   // final private NavigableMap<Long, Short> treeMap;
   final private NavigableMap<Long, List<Short>> multipleIdsMap;
@@ -23,7 +23,7 @@ final public class TreeMapRangeContainer implements RangeContainer {
    * 
    * @param data
    */
-  public TreeMapRangeContainer(long[] data) {
+  public TreeMapRangeContainerImpl(long[] data) {
 
     // this.treeMap = Collections.synchronizedNavigableMap(new TreeMap<Long, Short>());
     this.multipleIdsMap = Collections.synchronizedNavigableMap(new TreeMap<Long, List<Short>>());
@@ -44,16 +44,16 @@ final public class TreeMapRangeContainer implements RangeContainer {
   @Override
   public Ids findIdsInRange(long fromValue, long toValue, boolean fromInclusive, boolean toInclusive) {
 
-    IdsFromTreeMap ids = null;
+    IdsFromTreeMapImpl ids = null;
 
     // validate input condition
     if (fromValue > toValue || (fromValue == toValue && fromInclusive != toInclusive)
         || (fromValue == toValue && fromInclusive == false && toInclusive == false)) {
 
-      ids = new IdsFromTreeMap();
+      ids = new IdsFromTreeMapImpl();
     } else if (this.multipleIdsMap == null || this.multipleIdsMap.size() == 0) {
 
-      ids = new IdsFromTreeMap();
+      ids = new IdsFromTreeMapImpl();
     } else {
 
       NavigableMap<Long, List<Short>> subMap =
@@ -65,7 +65,7 @@ final public class TreeMapRangeContainer implements RangeContainer {
         while (it.hasNext()) {
           temp.addAll(it.next());
         }
-        ids = new IdsFromTreeMap(temp);
+        ids = new IdsFromTreeMapImpl(temp);
       }
     }
 

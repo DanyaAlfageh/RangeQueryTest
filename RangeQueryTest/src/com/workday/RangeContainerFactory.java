@@ -9,5 +9,4 @@ public interface RangeContainerFactory {
    * 2000.
    */
   RangeContainer createContainer(long[] data);
-
 }

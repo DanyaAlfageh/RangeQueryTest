@@ -30,8 +30,8 @@ public class RangeQueryBasicTest {
 
   @Before
   public void setUp() {
-    RangeContainerFactory rf1 = new TreeMapRangeContainerFactory();
-    RangeContainerFactory rf2 = new BalancedBSTRangeContainerFactory();
+    RangeContainerFactory rf1 = new TreeMapRangeContainerFactoryImpl();
+    RangeContainerFactory rf2 = new BalancedBSTRangeContainerFactoryImpl();
 
     // simple cases
     rc1 = rf1.createContainer(new long[] {10, 12, 17, 21, 2, 15, 16});

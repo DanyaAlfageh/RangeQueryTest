@@ -12,7 +12,7 @@ import java.util.List;
  */
 final public class BalancedBSTRangeContainer implements RangeContainer {
 
-  private BalancedBST bst;
+  final private BalancedBST bst;
 
   /**
    * Constructor

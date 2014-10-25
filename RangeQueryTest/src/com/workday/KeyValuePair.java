@@ -7,8 +7,9 @@ package com.workday;
  *
  */
 final public class KeyValuePair implements Comparable<KeyValuePair> {
-  short id;
-  long value;
+
+  final private short id;
+  final private long value;
 
   public KeyValuePair(short id, long value) {
     this.id = id;
@@ -23,5 +24,14 @@ final public class KeyValuePair implements Comparable<KeyValuePair> {
       return 0;
     else
       return -1;
+  }
+
+  public short getId() {
+    return id;
+  }
+
+
+  public long getValue() {
+    return value;
   }
 }

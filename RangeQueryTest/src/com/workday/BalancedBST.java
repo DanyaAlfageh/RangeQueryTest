@@ -12,6 +12,7 @@ import java.util.List;
  */
 final public class BalancedBST {
 
+  // not final but still only been used within a private method which is called by Constructor.
   private TreeNode root;
 
   /**
@@ -49,7 +50,7 @@ final public class BalancedBST {
     KeyValuePair[] left = Arrays.copyOfRange(sortedKVPArr, begin, mid);
     KeyValuePair[] right = Arrays.copyOfRange(sortedKVPArr, mid + 1, end);
 
-    TreeNode node = new TreeNode(sortedKVPArr[mid].id, sortedKVPArr[mid].value);
+    TreeNode node = new TreeNode(sortedKVPArr[mid].getId(), sortedKVPArr[mid].getValue());
 
     if (left.length > 0)
       node.left = createBBST(left);

@@ -27,7 +27,7 @@ final public class BalancedBSTRangeContainer implements RangeContainer {
   public Ids findIdsInRange(long fromValue, long toValue, boolean fromInclusive, boolean toInclusive) {
     // validate input condition
     if (fromValue > toValue || (fromValue == toValue && fromInclusive != toInclusive)
-        || (fromValue == toValue && fromInclusive == toInclusive == false)) {
+        || (fromValue == toValue && fromInclusive == false && toInclusive == false)) {
       return new IdsFromBST(new ArrayList<Short>());
     }
 

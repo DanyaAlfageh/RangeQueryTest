@@ -23,10 +23,9 @@ public class RangeQueryBasicTest {
   private RangeContainer elargeVolumnRC2;
 
   private RangeContainer erc3;
-  private RangeContainer elargeVolumnRC3;
 
   private RangeContainer erc4;
-  private RangeContainer elargeVolumnRC4;
+
 
 
   @Before
@@ -60,7 +59,8 @@ public class RangeQueryBasicTest {
     elargeVolumnRC2 = rf2.createContainer(testData);
 
     // edge case3: Invalid Input Condition
-
+    erc3 = rf1.createContainer(new long[] {10, 12, 17, 21, 2, 15, 16});
+    erc4 = rf2.createContainer(new long[] {10, 12, 17, 21, 2, 15, 16});
 
   }
 
@@ -113,6 +113,7 @@ public class RangeQueryBasicTest {
     assertEquals(Ids.END_OF_IDS, ids.nextId());
   }
 
+  // edge case1: duplicated data
   @Test
   public void edgeCase1AgainstTreeMap() {
     Ids ids = erc1.findIdsInRange(100, 10000, true, true);
@@ -123,6 +124,7 @@ public class RangeQueryBasicTest {
     assertEquals(Ids.END_OF_IDS, ids.nextId());
   }
 
+  // edge case2: large amount of duplicated data
   @Test
   public void edgeCase2AgainstTreeMap() {
     Ids ids = elargeVolumnRC1.findIdsInRange(199999, 32000000, true, true);
@@ -136,6 +138,29 @@ public class RangeQueryBasicTest {
     assertEquals(1, ids.nextId());
     assertEquals(2, ids.nextId());
     assertEquals(3, ids.nextId());
+    ids = elargeVolumnRC1.findIdsInRange(200000, 200001, true, false);
+    assertEquals(0, ids.nextId());
+    assertEquals(1, ids.nextId());
+    assertEquals(2, ids.nextId());
+    assertEquals(3, ids.nextId());
+    ids = elargeVolumnRC1.findIdsInRange(199999, 200000, false, true);
+    assertEquals(0, ids.nextId());
+    assertEquals(1, ids.nextId());
+    assertEquals(2, ids.nextId());
+    assertEquals(3, ids.nextId());
+    ids = elargeVolumnRC1.findIdsInRange(199999, 200000, false, false);
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
+  }
+
+  // edge case3: Invalid Input Condition
+  @Test
+  public void edgeCase3AgainstTreeMap() {
+    Ids ids = erc3.findIdsInRange(10, 2, true, true);
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
+    ids = erc3.findIdsInRange(10, 10, false, false);
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
+    ids = erc3.findIdsInRange(10, 10, true, false);
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
   }
 
   /**
@@ -151,6 +176,7 @@ public class RangeQueryBasicTest {
     assertEquals(Ids.END_OF_IDS, ids.nextId());
   }
 
+  // edge case1: duplicated data
   @Test
   public void edgeCase1AgainstBBST() {
     Ids ids = erc2.findIdsInRange(100, 10000, true, true);
@@ -160,4 +186,38 @@ public class RangeQueryBasicTest {
     assertEquals(3, ids.nextId());
     assertEquals(Ids.END_OF_IDS, ids.nextId());
   }
+
+  // edge case2: large amount of duplicated data
+  @Test
+  public void edgeCase2AgainstBBST() {
+    Ids ids = elargeVolumnRC2.findIdsInRange(200000, 200000, true, true);
+    assertEquals(0, ids.nextId());
+    assertEquals(1, ids.nextId());
+    assertEquals(2, ids.nextId());
+    assertEquals(3, ids.nextId());
+    ids = elargeVolumnRC2.findIdsInRange(200000, 200001, true, false);
+    assertEquals(0, ids.nextId());
+    assertEquals(1, ids.nextId());
+    assertEquals(2, ids.nextId());
+    assertEquals(3, ids.nextId());
+    ids = elargeVolumnRC2.findIdsInRange(199999, 200000, false, true);
+    assertEquals(0, ids.nextId());
+    assertEquals(1, ids.nextId());
+    assertEquals(2, ids.nextId());
+    assertEquals(3, ids.nextId());
+    ids = elargeVolumnRC2.findIdsInRange(199999, 200000, false, false);
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
+  }
+
+  // edge case3: Invalid Input Condition
+  @Test
+  public void edgeCase3AgainstBBST() {
+    Ids ids = erc4.findIdsInRange(10, 2, true, true);
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
+    ids = erc4.findIdsInRange(10, 10, false, false);
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
+    ids = erc4.findIdsInRange(10, 10, true, false);
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
+  }
+
 }

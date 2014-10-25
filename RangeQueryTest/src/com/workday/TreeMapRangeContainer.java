@@ -48,7 +48,7 @@ final public class TreeMapRangeContainer implements RangeContainer {
 
     // validate input condition
     if (fromValue > toValue || (fromValue == toValue && fromInclusive != toInclusive)
-        || (fromValue == toValue && fromInclusive == toInclusive == false)) {
+        || (fromValue == toValue && fromInclusive == false && toInclusive == false)) {
 
       ids = new IdsFromTreeMap();
     } else if (this.multipleIdsMap == null || this.multipleIdsMap.size() == 0) {

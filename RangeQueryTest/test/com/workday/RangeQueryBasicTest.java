@@ -32,7 +32,7 @@ public class RangeQueryBasicTest {
   @Before
   public void setUp() {
     RangeContainerFactory rf1 = new TreeMapRangeContainerFactory();
-    RangeContainerFactory rf2 = new BSTRangeContainerFactory();
+    RangeContainerFactory rf2 = new BalancedBSTRangeContainerFactory();
 
     // simple cases
     rc1 = rf1.createContainer(new long[] {10, 12, 17, 21, 2, 15, 16});
@@ -47,9 +47,13 @@ public class RangeQueryBasicTest {
     largeVolumnRC1 = rf1.createContainer(testData);
     largeVolumnRC2 = rf2.createContainer(testData);
 
-    // edge case1
+    // edge case1: duplicated data
     erc1 = rf1.createContainer(new long[] {10000, 10000, 10000, 10000});
     erc2 = rf2.createContainer(new long[] {10000, 10000, 10000, 10000});
+
+    // edge case2: Input data is pre-ordered. It might affect performance
+
+    // edge case3:
   }
 
   /**
@@ -106,7 +110,6 @@ public class RangeQueryBasicTest {
     assertEquals(3, ids.nextId());
     assertEquals(Ids.END_OF_IDS, ids.nextId());
   }
-
 
   /**
    * Test the BBST Implementation

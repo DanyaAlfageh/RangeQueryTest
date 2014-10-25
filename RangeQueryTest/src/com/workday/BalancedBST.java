@@ -70,6 +70,21 @@ final public class BalancedBST {
     return list;
   }
 
+  //@formatter:off
+  /**
+   * Search Ids in Range. following steps as below:
+   * 1. check whether value equals range boundaries.
+   * 2. check whether value is within range. If it is, recursively search left and right
+   * 3. check whether value is out of range. If it is, cut the search tree
+   * 
+   * @param root
+   * @param fromValue
+   * @param toValue
+   * @param fromInclusive
+   * @param toInclusive
+   * @param list
+   */
+  //@formatter:on
   private void searchIdsInRange(TreeNode root, long fromValue, long toValue, boolean fromInclusive,
       boolean toInclusive, List<Short> list) {
 

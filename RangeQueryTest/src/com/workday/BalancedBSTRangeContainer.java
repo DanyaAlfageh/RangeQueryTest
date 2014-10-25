@@ -14,13 +14,18 @@ final public class BalancedBSTRangeContainer implements RangeContainer {
 
   private BalancedBST bst;
 
+  /**
+   * Constructor
+   * 
+   * @param data
+   */
   public BalancedBSTRangeContainer(long[] data) {
     bst = new BalancedBST(data);
   }
 
   @Override
   public Ids findIdsInRange(long fromValue, long toValue, boolean fromInclusive, boolean toInclusive) {
-
+    // validate input condition
     if (fromValue > toValue || (fromValue == toValue && fromInclusive != toInclusive)
         || (fromValue == toValue && fromInclusive == toInclusive == false)) {
       return new IdsFromBST(new ArrayList<Short>());

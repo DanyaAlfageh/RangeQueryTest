@@ -1,6 +1,11 @@
 package com.workday;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.NavigableMap;
+import java.util.TreeMap;
 
 /**
  * Container Object by using TreeMap.
@@ -10,21 +15,29 @@ import java.util.NavigableMap;
  */
 final public class TreeMapRangeContainer implements RangeContainer {
 
-  final private NavigableMap<Long, Short> treeMap;
+  // final private NavigableMap<Long, Short> treeMap;
+  final private NavigableMap<Long, List<Short>> multipleIdsMap;
 
-  public TreeMapRangeContainer(NavigableMap<Long, Short> treeMap) {
-    this.treeMap = treeMap;
-  }
+  /**
+   * Constructor
+   * 
+   * @param data
+   */
+  public TreeMapRangeContainer(long[] data) {
 
-  // Create the TreeMap
-  public void initTreeMap(long[] data) throws Exception {
-    // validate input data
-    if (data == null || data.length == 0) {
-      throw new Exception("Input data is invalid!");
-    }
+    // this.treeMap = Collections.synchronizedNavigableMap(new TreeMap<Long, Short>());
+    this.multipleIdsMap = Collections.synchronizedNavigableMap(new TreeMap<Long, List<Short>>());
 
-    for (short i = 0; i < data.length; i++) {
-      this.treeMap.put(Long.valueOf(data[i]), Short.valueOf(i));
+    if (data != null && data.length != 0) {
+      for (short i = 0; i < data.length; i++) {
+        if (!multipleIdsMap.containsKey(data[i])) {
+          List<Short> ids = new ArrayList<Short>();
+          ids.add(i);
+          multipleIdsMap.put(data[i], ids);
+        } else {
+          multipleIdsMap.get(data[i]).add(i);
+        }
+      }
     }
   }
 
@@ -32,21 +45,27 @@ final public class TreeMapRangeContainer implements RangeContainer {
   public Ids findIdsInRange(long fromValue, long toValue, boolean fromInclusive, boolean toInclusive) {
 
     IdsFromTreeMap ids = null;
+
     // validate input condition
     if (fromValue > toValue || (fromValue == toValue && fromInclusive != toInclusive)
         || (fromValue == toValue && fromInclusive == toInclusive == false)) {
-      Short[] test = new Short[0];
-      ids = new IdsFromTreeMap(test);
-      return ids;
-    }
 
-    NavigableMap<Long, Short> subMap =
-        this.treeMap.subMap(fromValue, fromInclusive, toValue, toInclusive);
+      ids = new IdsFromTreeMap();
+    } else if (this.multipleIdsMap == null || this.multipleIdsMap.size() == 0) {
 
-    synchronized (this.treeMap) {
-      Object[] objArr = subMap.values().toArray(new Short[subMap.size()]);
-      if (objArr instanceof Short[]) {
-        ids = new IdsFromTreeMap((Short[]) objArr);
+      ids = new IdsFromTreeMap();
+    } else {
+
+      NavigableMap<Long, List<Short>> subMap =
+          multipleIdsMap.subMap(fromValue, fromInclusive, toValue, toInclusive);
+
+      synchronized (this.multipleIdsMap) {
+        List<Short> temp = new ArrayList<Short>();
+        Iterator<List<Short>> it = subMap.values().iterator();
+        while (it.hasNext()) {
+          temp.addAll(it.next());
+        }
+        ids = new IdsFromTreeMap(temp);
       }
     }
 

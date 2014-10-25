@@ -30,6 +30,12 @@ final public class BalancedBST {
     this.root = createBBST(kvpArr);
   }
 
+  /**
+   * Create Balanced Binary Tree
+   * 
+   * @param sortedKVPArr Sorted KVP array
+   * @return
+   */
   private TreeNode createBBST(KeyValuePair[] sortedKVPArr) {
 
     if (sortedKVPArr == null || sortedKVPArr.length == 0) {
@@ -55,7 +61,7 @@ final public class BalancedBST {
     return this.root;
   }
 
-  // search all the ids in the given range
+  // Search all the ids in the given range
   public List<Short> searchIdsInRange(long fromValue, long toValue, boolean fromInclusive,
       boolean toInclusive) {
 
@@ -71,56 +77,48 @@ final public class BalancedBST {
       return;
     }
 
-    if (root.value > fromValue && root.value < toValue) {
-      list.add(root.id);
-      searchIdsInRange(root.left, fromValue, toValue, fromInclusive, toInclusive, list);
-      searchIdsInRange(root.right, fromValue, toValue, fromInclusive, toInclusive, list);
-    }
-
+    // fromValue != toValue
     if (fromValue != toValue) {
-      if (root.value == fromValue && fromInclusive) {
-        list.add(root.id);
+      // if root.value equals to fromValue
+      if (root.value == fromValue) {
+
+        if (fromInclusive) {
+          list.add(root.id);
+        }
+        searchIdsInRange(root.left, fromValue, toValue, fromInclusive, toInclusive, list);
         searchIdsInRange(root.right, fromValue, toValue, fromInclusive, toInclusive, list);
       }
 
-      if (root.value == toValue && toInclusive) {
-        list.add(root.id);
+      // if root.value equals to toValue
+      if (root.value == toValue) {
+        if (toInclusive) {
+          list.add(root.id);
+        }
         searchIdsInRange(root.left, fromValue, toValue, fromInclusive, toInclusive, list);
+        searchIdsInRange(root.right, fromValue, toValue, fromInclusive, toInclusive, list);
       }
+
+      // fromValue == toValue and rootValue equals to fromValue, need to search both left and right
+      // trees in case of duplicated values
     } else if (root.value == fromValue) {
       list.add(root.id);
       searchIdsInRange(root.left, fromValue, toValue, fromInclusive, toInclusive, list);
       searchIdsInRange(root.right, fromValue, toValue, fromInclusive, toInclusive, list);
     }
 
-    // no need to search left tree
-    if (root.value < fromValue) {
+    // if root.value is in the range, search left and right tree
+    if (root.value > fromValue && root.value < toValue) {
+      list.add(root.id);
+      searchIdsInRange(root.left, fromValue, toValue, fromInclusive, toInclusive, list);
+      searchIdsInRange(root.right, fromValue, toValue, fromInclusive, toInclusive, list);
+
+    } // no need to search left tree
+    else if (root.value < fromValue) {
       searchIdsInRange(root.right, fromValue, toValue, fromInclusive, toInclusive, list);
     }
-
     // no need to search right tree
-    if (root.value > toValue) {
+    else if (root.value > toValue) {
       searchIdsInRange(root.left, fromValue, toValue, fromInclusive, toInclusive, list);
     }
   }
-  /*
-   * // insert node to the tree private TreeNode insert(TreeNode node, short id, long value) { if
-   * (node == null) { return new TreeNode(id, value); }
-   * 
-   * if (this.random.nextBoolean()) { return insertRoot(node, id, value); }
-   * 
-   * if (node.value >= value) { node.left = insert(node.left, id, value); } else { node.right =
-   * insert(node.right, id, value); } return node; }
-   * 
-   * private TreeNode insertRoot(TreeNode node, short id, long value) { if (node == null) { return
-   * new TreeNode(id, value); } if (node.value >= value) { node.left = insertRoot(node.left, id,
-   * value); node = rotateRight(node); } else { node.right = insertRoot(node.right, id, value); node
-   * = rotateLeft(node); } return node; }
-   * 
-   * // rotate the tree private TreeNode rotateRight(TreeNode node) { TreeNode top = node.left;
-   * node.left = top.right; top.right = node; return top; }
-   * 
-   * private TreeNode rotateLeft(TreeNode node) { TreeNode top = node.right; node.right = top.left;
-   * top.left = node; return top; }
-   */
 }

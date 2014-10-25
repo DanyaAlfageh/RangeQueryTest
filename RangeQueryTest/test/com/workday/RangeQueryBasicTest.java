@@ -7,6 +7,7 @@ import org.junit.Test;
 
 public class RangeQueryBasicTest {
 
+  // Regualr Cases
   private RangeContainer rc1;
   private RangeContainer largeVolumnRC1;
 
@@ -14,13 +15,26 @@ public class RangeQueryBasicTest {
   private RangeContainer largeVolumnRC2;
   private long[] testData = new long[32000];
 
+  // Edge Cases
+  private RangeContainer erc1;
+  private RangeContainer elargeVolumnRC1;
+
+  private RangeContainer erc2;
+  private RangeContainer elargeVolumnRC2;
+
+  private RangeContainer erc3;
+  private RangeContainer elargeVolumnRC3;
+
+  private RangeContainer erc4;
+  private RangeContainer elargeVolumnRC4;
+
 
   @Before
   public void setUp() {
     RangeContainerFactory rf1 = new TreeMapRangeContainerFactory();
     RangeContainerFactory rf2 = new BSTRangeContainerFactory();
 
-    // simple case
+    // simple cases
     rc1 = rf1.createContainer(new long[] {10, 12, 17, 21, 2, 15, 16});
     rc2 = rf2.createContainer(new long[] {10, 12, 17, 21, 2, 15, 16});
 
@@ -32,8 +46,15 @@ public class RangeQueryBasicTest {
     }
     largeVolumnRC1 = rf1.createContainer(testData);
     largeVolumnRC2 = rf2.createContainer(testData);
+
+    // edge case1
+    erc1 = rf1.createContainer(new long[] {10000, 10000, 10000, 10000});
+    erc2 = rf2.createContainer(new long[] {10000, 10000, 10000, 10000});
   }
 
+  /**
+   * Given basic unit tests
+   */
   @Test
   public void runARangeQueryOnTreeMapImpl() {
     Ids ids = rc1.findIdsInRange(14, 17, true, true);
@@ -48,12 +69,6 @@ public class RangeQueryBasicTest {
     ids = rc1.findIdsInRange(20, Long.MAX_VALUE, false, true);
     assertEquals(3, ids.nextId());
     assertEquals(Ids.END_OF_IDS, ids.nextId());
-  }
-
-  @Test
-  public void runLargeVolumRangeQueryOnTreeMap() {
-    Ids ids = largeVolumnRC1.findIdsInRange(1300, 32000000, true, true);
-    assertEquals(1, ids.nextId());
   }
 
   @Test
@@ -72,9 +87,43 @@ public class RangeQueryBasicTest {
     assertEquals(Ids.END_OF_IDS, ids.nextId());
   }
 
+
+  /**
+   * Test the TreeMap Implementation
+   */
+  @Test
+  public void runLargeVolumRangeQueryOnTreeMap() {
+    Ids ids = largeVolumnRC1.findIdsInRange(1300, 32000000, true, true);
+    assertEquals(1, ids.nextId());
+  }
+
+  @Test
+  public void edgeCase1AgainstTreeMap() {
+    Ids ids = erc1.findIdsInRange(100, 10000, true, true);
+    assertEquals(0, ids.nextId());
+    assertEquals(1, ids.nextId());
+    assertEquals(2, ids.nextId());
+    assertEquals(3, ids.nextId());
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
+  }
+
+
+  /**
+   * Test the BBST Implementation
+   */
   @Test
   public void runLargeVolumRangeQuery() {
     Ids ids = largeVolumnRC2.findIdsInRange(1300, 32000000, true, true);
     assertEquals(1, ids.nextId());
+  }
+
+  @Test
+  public void edgeCase1AgainstBBST() {
+    Ids ids = erc2.findIdsInRange(100, 10000, true, true);
+    assertEquals(0, ids.nextId());
+    assertEquals(1, ids.nextId());
+    assertEquals(2, ids.nextId());
+    assertEquals(3, ids.nextId());
+    assertEquals(Ids.END_OF_IDS, ids.nextId());
   }
 }
